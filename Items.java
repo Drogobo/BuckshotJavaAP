@@ -45,52 +45,54 @@ public class Items
 
     // This method is purely to match items to the functions
     public static void useItem(int item, Gun gun, Player user, Player opponent) {
-        String toUse = user.getItems()[item]; // Get the string for the item which the player will use
-        user.removeItem(item); // Remove it from their inventory;
+        if (item != -1) { // Make sure the user is using a valid item before starting
+            String toUse = user.getItems()[item]; // Get the string for the item which the player will use
+            user.removeItem(item); // Remove it from their inventory;
 
-        // Inform the users of the items used
-        System.out.println("\n" + user.getName() + " used " + toUse + ".");
+            // Inform the users of the items used
+            System.out.println("\n" + user.getName() + " used " + toUse + ".");
 
-        // Heads up: dealer has special rules he plays by
-        switch(toUse) { // Compare to cases that it could be
-                // I want to avoid writing the items more times than I have to
-                // Time to use the items!
-            case BEER:
-                beer(gun);
-                break;
-            case ADRENALINE:
-                stealFrom(gun, user, opponent);
-                break;
-            case CIGARETTE:
-                user.increaseHealth(1); // Add 1 to their health
-                break;
-            case PHONE:
-                usePhone(gun, user);
-                break;
-            case GLASS:
-                boolean shell = peek(gun);
-                // Check to see if the player is a dealer
-                // This is what instanceof does
-                // It returns a boolean to see if a certain Object is a subclass of another object
-                if (user instanceof Dealer) {
-                    setDealerKnowledge((Dealer)user, shell); // Cast the Player object to a Dealer because that is really what it is
-                }
-                break;
-            case MEDICINE:
-                takeMedicine(user);
-                break;
-            case INVERTER:
-                gun.invert();
-                break;
-            case HANDCUFFS:
-                if (!opponent.handcuff()) {
-                    System.out.println("Opponent is already cuffed");
-                    user.addItem(HANDCUFFS);
-                }
-                break;
-            case KNIFE:
-                gun.cut();
-                break;
+            // Heads up: dealer has special rules he plays by
+            switch(toUse) { // Compare to cases that it could be
+                    // I want to avoid writing the items more times than I have to
+                    // Time to use the items!
+                case BEER:
+                    beer(gun);
+                    break;
+                case ADRENALINE:
+                    stealFrom(gun, user, opponent);
+                    break;
+                case CIGARETTE:
+                    user.increaseHealth(1); // Add 1 to their health
+                    break;
+                case PHONE:
+                    usePhone(gun, user);
+                    break;
+                case GLASS:
+                    boolean shell = peek(gun, user);
+                    // Check to see if the player is a dealer
+                    // This is what instanceof does
+                    // It returns a boolean to see if a certain Object is a subclass of another object
+                    if (user instanceof Dealer) {
+                        setDealerKnowledge((Dealer)user, shell); // Cast the Player object to a Dealer because that is really what it is
+                    }
+                    break;
+                case MEDICINE:
+                    takeMedicine(user);
+                    break;
+                case INVERTER:
+                    gun.invert();
+                    break;
+                case HANDCUFFS:
+                    if (!opponent.handcuff()) {
+                        System.out.println("Opponent is already cuffed");
+                        user.addItem(HANDCUFFS);
+                    }
+                    break;
+                case KNIFE:
+                    gun.cut();
+                    break;
+            }
         }
     }
 
@@ -122,9 +124,9 @@ public class Items
                 }
                 // int shell = randomShell + 1; // This is the way we are going to talk about the next shell
                 // if (gun.find(randomShell)) { // If it is live
-                    // System.out.println("SHELL #" + shell + "... LIVE ROUND...");
+                // System.out.println("SHELL #" + shell + "... LIVE ROUND...");
                 // } else { // If it is blank
-                    // System.out.println("SHELL #" + shell + "... BLANK ROUND...");
+                // System.out.println("SHELL #" + shell + "... BLANK ROUND...");
                 // }
                 gun.addToKnownRounds(randomShell); // Add the round to a list of known rounds to be use later
             }
@@ -142,14 +144,21 @@ public class Items
     }
 
     // Look at the current shell
-    private static boolean peek(Gun gun) {
-        boolean peek = gun.peek(); // Take a peek into the gun
-        if (peek) {
-            System.out.println("LIVE ROUND");
+    private static boolean peek(Gun gun, Player user) {
+        if (user instanceof Dealer) {
+            // The dealer peeking should not print anything
+            boolean peek = gun.peek(); // Take a peek into the gun
+            return peek; // Let me use it for extra purposes if I need
         } else {
-            System.out.println("BLANK ROUND");
+            // The player taking a peek should print something
+            boolean peek = gun.peek(); // Take a peek into the gun
+            if (peek) {
+                System.out.println("LIVE ROUND");
+            } else {
+                System.out.println("BLANK ROUND");
+            }
+            return peek; // Let me use it for extra purposes if I need
         }
-        return peek; // Let me use it for extra purposes if I need
     }
 
     // Set the dealer to know things if he uses GLASS

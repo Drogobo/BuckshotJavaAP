@@ -95,7 +95,6 @@ public class Player
             }
         } else {
             System.out.println(getName() + " can't play their turn because they are handcuffed.");
-            uncuff();
         }
     }
 
@@ -172,12 +171,13 @@ public class Player
     
     // Determine if the dealer has a specific item and return the position in the array
     public int has(String item) {
+        // Loop through the array and compare equality
         for (int i = 0; i < getItems().length; i++) {
             if (getItems()[i].equals(item)) {
                 return i; // This means he has at least one of the items
             }
         }
-        return -1;
+        return -1; // Return a -1 if the user does not have the item
     }
     
     // Find and return the item at i

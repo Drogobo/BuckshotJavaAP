@@ -36,7 +36,7 @@ public class Dealer extends Player // This class extends Player because it has a
             boolean keepGoing = true; // Sentinel value to control loop
             
             // Loop for his turn
-            while (keepGoing && !(gun.isEmpty())) {
+            while (!(gun.isEmpty()) && keepGoing) {
                 // Check to see if the dealer knows the current shell
                 if (gun.isCurrentShellKnown()) {
                     // Then update variables
@@ -44,7 +44,7 @@ public class Dealer extends Player // This class extends Player because it has a
                     currentShell = gun.peek();
                 }
                 // Use as many items as possible first
-                // Goes in a random order of items to use
+                // Goes in a (sort of) random order of items to use
                 boolean usingItems = true;
                 // Start looping to use items
                 while (usingItems && (getItems().length > 0 && gun.getRounds() > 1)) {
@@ -65,8 +65,8 @@ public class Dealer extends Player // This class extends Player because it has a
                         int item = -1;
                         item = Randomness.getRandomInt(0, getItems().length);
                         // This part of the method will only allow these items to be used
-                        if (has("BEER") == -1 && (has("PHONE") == -1 && (has("HANDCUFFS") == -1
-                            && ((has("MEDICINE") == -1) && getHealth() > getMaxHealth() - 1 )))) {
+                        if (has("BEER") == -1 && has("PHONE") == -1 && (has("HANDCUFFS") == -1
+                            || player.isHandcuffed()) && (has("MEDICINE") == -1 || !(getHealth() < getMaxHealth() - 1))) {
                             usingItems = false; // Then he should stop using all items
                         } else {
                             // Allow the use of these items:
@@ -81,6 +81,7 @@ public class Dealer extends Player // This class extends Player because it has a
                         }
                     }
                 }
+                
                 // First make sure he knows if he knows the shell
                 if (gun.getRounds() == 1) {
                     // He can't cheat if he doesn't know the amount of rounds in the gun
@@ -143,7 +144,6 @@ public class Dealer extends Player // This class extends Player because it has a
         } else {
             // Account for being handcuffed
             System.out.println(getName() + " can't play their turn because they are handcuffed.");
-            uncuff();
         }
     }
 

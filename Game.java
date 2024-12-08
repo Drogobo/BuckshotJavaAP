@@ -31,7 +31,7 @@ public class Game
         // Both players will start with the same amount of health
         int health = Randomness.getRandomInt(2,6);
         player.setHealth(health); dealer.setHealth(health);
-        
+
         // Enter the main game loop
         do {
             gun.init(); // Make the gun usable for the round
@@ -42,7 +42,7 @@ public class Game
                 player.addItem(Items.getRandomItem());
                 dealer.addItem(Items.getRandomItem());
             }
-            
+
             // Print the player information to the console
             System.out.println(player);
             System.out.println(dealer);
@@ -55,19 +55,39 @@ public class Game
                 // Now we make a crossroads
                 // The player or dealer will have a turn
                 if (!dealersTurn) { // Not the dealer's turn means it is the player's turn
-                    System.out.println("\n" + player.getName() + " is up."); // Newline for easier reading
-                    player.playTurn(gun, dealer);
+                    // Set the variable before the player's turn so that it doesn't immediately uncuff the dealer
+                    boolean isCuffed = dealer.isHandcuffed();
+                    if (player.isHandcuffed()) { // Make sure they can't play while handcuffed
+                        System.out.println(player.getName() + " can't play their turn because they are handcuffed.");
+                    } else {
+                        System.out.println("\n" + player.getName() + " is up."); // Newline for easier reading
+                        player.playTurn(gun, dealer);
+                    }
+                    // This should let the player cuff, have an extra turn, and then uncuff the dealer
+                    if (isCuffed) {
+                        dealer.uncuff();
+                    }
                     dealersTurn = true;
                 } else { // Now we enter the code for the dealer
-                    System.out.println("\n" + dealer.getName() + " is up."); // Newline for easier reading
-                    dealer.playTurn(gun, player);
+                    // Set the variable before the dealer's turn so that it doesn't immediately uncuff the player
+                    boolean isCuffed = player.isHandcuffed();
+                    if (dealer.isHandcuffed()) {
+                        System.out.println(dealer.getName() + " can't play their turn because they are handcuffed.");
+                    } else {
+                        System.out.println("\n" + dealer.getName() + " is up."); // Newline for easier reading
+                        dealer.playTurn(gun, player);
+                    }
+                    // Uncuff the player at the end of his turn
+                    if (isCuffed) {
+                        player.uncuff();
+                    }
                     dealersTurn = false;
                 }
-                
+
             }
 
         } while (player.getHealth() > 0 && dealer.getHealth() > 0); // This do while condition makes sure the game reruns if nobody loses for another round
-        
+
         // Now we can print results
         if (player.getHealth() > dealer.getHealth()) {
             System.out.println(player.getName() + " WINS!");
