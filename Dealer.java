@@ -143,7 +143,7 @@ public class Dealer extends Player // This class extends Player because it has a
             }
         } else {
             // Account for being handcuffed
-            System.out.println(getName() + " can't play their turn because they are handcuffed.");
+            System.out.println("\n" + getName() + " can't play their turn because they are handcuffed.");
         }
     }
 

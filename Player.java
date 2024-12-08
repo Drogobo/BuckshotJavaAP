@@ -94,7 +94,7 @@ public class Player
                 }
             }
         } else {
-            System.out.println(getName() + " can't play their turn because they are handcuffed.");
+            System.out.println("\n" + getName() + " can't play their turn because they are handcuffed.");
         }
     }
 
