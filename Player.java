@@ -132,7 +132,15 @@ public class Player
 
     public void setHealth(int h) {health = h; maxHealth = h;}
 
-    public void decreaseHealth(int h) {health -= h; System.out.println(name + " lost " + h + " charges.");}
+    // Taking damage
+    public void decreaseHealth(int h) {
+        health -= h;
+        // Make sure it is not negative and instead 0
+        if (health < 0) {
+            health = 0;
+        }
+        System.out.println(name + " lost " + h + " charges.");
+    }
 
     // This method is more complicated
     public void increaseHealth(int h) {
