@@ -67,7 +67,7 @@ public class Player
     public void playTurn(Gun gun, Player dealer) {
         boolean keepGoing = true; // Sentinel value to control loop
         if (!handcuffed) { // Make sure the player is not cuffed before giving them a turn
-            while (keepGoing && !(gun.isEmpty())) {
+            while (keepGoing && !(gun.isEmpty()) && getHealth() > 0) { // The player can't be dead and make a turn
                 System.out.println("\n1. Pick up gun\n2. Use item");
                 // Now we have to get their input
                 String choice = ""; // Blank string to represent a sort of sentinel value

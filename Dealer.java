@@ -36,7 +36,7 @@ public class Dealer extends Player // This class extends Player because it has a
             boolean keepGoing = true; // Sentinel value to control loop
             
             // Loop for his turn
-            while (!(gun.isEmpty()) && keepGoing) {
+            while (!(gun.isEmpty()) && keepGoing && getHealth() > 0) { // The player can't be dead and make a turn
                 // Check to see if the dealer knows the current shell
                 if (gun.isCurrentShellKnown()) {
                     // Then update variables
