@@ -58,7 +58,7 @@ public class Game
                     // Set the variable before the player's turn so that it doesn't immediately uncuff the dealer
                     boolean isCuffed = dealer.isHandcuffed();
                     if (player.isHandcuffed()) { // Make sure they can't play while handcuffed
-                        System.out.println(player.getName() + " can't play their turn because they are handcuffed.");
+                        System.out.println("\n" + player.getName() + " can't play their turn because they are handcuffed.");
                     } else {
                         System.out.println("\n" + player.getName() + " is up."); // Newline for easier reading
                         player.playTurn(gun, dealer);
@@ -72,7 +72,7 @@ public class Game
                     // Set the variable before the dealer's turn so that it doesn't immediately uncuff the player
                     boolean isCuffed = player.isHandcuffed();
                     if (dealer.isHandcuffed()) {
-                        System.out.println(dealer.getName() + " can't play their turn because they are handcuffed.");
+                        System.out.println("\n" + dealer.getName() + " can't play their turn because they are handcuffed.");
                     } else {
                         System.out.println("\n" + dealer.getName() + " is up."); // Newline for easier reading
                         dealer.playTurn(gun, player);
