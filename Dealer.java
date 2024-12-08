@@ -72,7 +72,7 @@ public class Dealer extends Player // This class extends Player because it has a
                             // Allow the use of these items:
                             if (getItemAt(item).equals("BEER") ||
                             getItemAt(item).equals("PHONE") ||
-                            getItemAt(item).equals("HANDCUFFS")) {
+                            (getItemAt(item).equals("HANDCUFFS") && !(player.isHandcuffed()))) {
                                 Items.useItem(item, gun, this, player); // One of these items
                             } else if (getItemAt(item).equals("MEDICINE") && getHealth() < getMaxHealth() - 1) {
                                 // And also MEDICINE if they need 2 charges to get to the max
